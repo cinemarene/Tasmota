@@ -188,6 +188,28 @@ uint8_t Adafruit_Fingerprint::getParameters(void) {
 
 /**************************************************************************/
 /*!
+    @brief  Get the product information
+    @returns True if password is correct
+*/
+/**************************************************************************/
+uint8_t Adafruit_Fingerprint::getProductInformation(void) {
+  GET_CMD_PACKET(FINGERPRINT_PRODUCTINFORMATION);
+
+  memcpy(fpmModel, &packet.data[1], 15);
+  memcpy(fpsBN, &packet.data[17], 3);
+  memcpy(fpsSN, &packet.data[21], 7);
+  fpsHWV = ((uint16_t)packet.data[29] << 8) | packet.data[30];
+  memcpy(fpsModel, &packet.data[31], 7);
+  fpsWidth = ((uint16_t)packet.data[39] << 8) | packet.data[40];
+  fpsHeight = ((uint16_t)packet.data[41] << 8) | packet.data[42];
+  tplSize = ((uint16_t)packet.data[43] << 8) | packet.data[44];
+  tplTotal = ((uint16_t)packet.data[45] << 8) | packet.data[46];
+
+  return packet.data[0];
+}
+
+/**************************************************************************/
+/*!
     @brief   Ask the sensor to take an image of the finger pressed on surface
     @returns <code>FINGERPRINT_OK</code> on success
     @returns <code>FINGERPRINT_NOFINGER</code> if no finger detected

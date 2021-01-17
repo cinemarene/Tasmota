@@ -69,6 +69,7 @@
 #define FINGERPRINT_DELETE 0x0C         //!< Delete templates
 #define FINGERPRINT_EMPTY 0x0D          //!< Empty library
 #define FINGERPRINT_READSYSPARAM 0x0F   //!< Read system parameters
+#define FINGERPRINT_PRODUCTINFORMATION 0x3C   //!< Read Sensor Product Information
 #define FINGERPRINT_SETPASSWORD 0x12    //!< Sets passwords
 #define FINGERPRINT_VERIFYPASSWORD 0x13 //!< Verifies the password
 #define FINGERPRINT_HISPEEDSEARCH                                              \
@@ -140,6 +141,7 @@ public:
 
   boolean verifyPassword(void);
   uint8_t getParameters(void);
+  uint8_t getProductInformation(void);
 
   uint8_t getImage(void);
   uint8_t image2Tz(uint8_t slot = 1);
@@ -178,6 +180,16 @@ public:
       0xFFFFFFFF;             ///< The device address (set by getParameters)
   uint16_t packet_len = 64;   ///< The max packet length (set by getParameters)
   uint16_t baud_rate = 57600; ///< The UART baud rate (set by getParameters)
+
+  char fpmModel[15];
+  char fpsBN[3];
+  char fpsSN[7];
+  uint16_t fpsHWV = 0;
+  char fpsModel[7];
+  uint16_t fpsHeight = 0;
+  uint16_t fpsWidth = 0;
+  uint16_t tplSize = 0;
+  uint16_t tplTotal = 0;
 
 private:
   uint8_t checkPassword(void);
